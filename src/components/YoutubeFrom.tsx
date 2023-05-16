@@ -10,7 +10,20 @@ type FromValues = {
 };
 
 const YoutubeFrom = () => {
-  const form = useForm<FromValues>();
+  const form = useForm<FromValues>({
+    defaultValues: async () => {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users/1"
+      );
+      const data = await response.json();
+      return {
+        username: "jahid",
+        email: data?.email,
+        channel: "",
+      };
+    },
+  });
+
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
 
@@ -44,7 +57,8 @@ const YoutubeFrom = () => {
             id="email"
             {...register("email", {
               pattern: {
-                value:/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                value:
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 message: "Invalid Email Formate",
               },
               validate: {
