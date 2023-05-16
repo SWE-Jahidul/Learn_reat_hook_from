@@ -7,6 +7,10 @@ type FromValues = {
   username: string;
   email: string;
   channel: string;
+  social: {
+    twitter: string;
+    facbook : string;
+  };
 };
 
 const YoutubeFrom = () => {
@@ -20,6 +24,10 @@ const YoutubeFrom = () => {
         username: "jahid",
         email: data?.email,
         channel: "",
+        social:{
+          twitter:"",
+          facbook:""
+        }
       };
     },
   });
@@ -92,6 +100,22 @@ const YoutubeFrom = () => {
             })}
           />
           <p className="error"> {errors.channel?.message}</p>
+        </div>
+        <div>
+          <label htmlFor="twitter"> Twitter </label>
+          <input
+            type="text"
+            id="twitter"
+            {...register("social.twitter")}
+          />
+        </div>
+        <div>
+          <label htmlFor="facbook"> Twitter </label>
+          <input
+            type="text"
+            id="facbook"
+            {...register("social.facbook")}
+          />
         </div>
         <button> Submit </button>
       </form>
