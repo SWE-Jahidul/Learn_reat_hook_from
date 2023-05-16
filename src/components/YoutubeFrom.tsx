@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 let renderCount = 0;
@@ -9,8 +9,12 @@ type FromValues = {
   channel: string;
   social: {
     twitter: string;
-    facbook : string;
+    facbook: string;
   };
+  phoneNumbers: string[];
+  phNumbers: {
+    number: string;
+  }[];
 };
 
 const YoutubeFrom = () => {
@@ -24,17 +28,22 @@ const YoutubeFrom = () => {
         username: "jahid",
         email: data?.email,
         channel: "",
-        social:{
-          twitter:"",
-          facbook:""
-        }
+        social: {
+          twitter: "",
+          facbook: "",
+        },
+        phoneNumbers: ["", ""],
+        phNumbers: [{ number: "" }],
       };
     },
   });
 
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
-
+  const { fields, append, remove } = useFieldArray({
+    name: "phNumbers",
+    control,
+  });
   const onSubmit = (data: FromValues) => {
     console.log("From Submitted", data);
   };
@@ -103,20 +112,48 @@ const YoutubeFrom = () => {
         </div>
         <div>
           <label htmlFor="twitter"> Twitter </label>
-          <input
-            type="text"
-            id="twitter"
-            {...register("social.twitter")}
-          />
+          <input type="text" id="twitter" {...register("social.twitter")} />
         </div>
         <div>
           <label htmlFor="facbook"> Twitter </label>
+          <input type="text" id="facbook" {...register("social.facbook")} />
+        </div>
+        <div>
+          <label htmlFor="primary-phone"> Primary phone number </label>
           <input
             type="text"
-            id="facbook"
-            {...register("social.facbook")}
+            id="primary-phone"
+            {...register("phoneNumbers.0")}
           />
         </div>
+        <div>
+          <label htmlFor="secondary-phone"> Secondary phone number </label>
+          <input
+            type="text"
+            id="secondary-phone"
+            {...register("phoneNumbers.1")}
+          />
+        </div>
+
+        <div>
+          <label> List of phone Numbers </label>
+          {fields.map((field, index) => {
+            return (
+              <div className="form-control" key={field.id}>
+                <input type="text" {...register(`phNumbers.${index}.number`)} />
+                {index > 0 && (
+                  <button type="button" onClick={() => remove(index)}>
+                    Remove
+                  </button>
+                )}
+              </div>
+            );
+          })}
+          <button type="button" onClick={() => append({ number: "" })}>
+            Add Phone Number
+          </button>
+        </div>
+
         <button> Submit </button>
       </form>
 
