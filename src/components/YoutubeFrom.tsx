@@ -1,5 +1,6 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import { useEffect } from "react";
 
 let renderCount = 0;
 
@@ -37,12 +38,12 @@ const YoutubeFrom = () => {
         phoneNumbers: ["", ""],
         phNumbers: [{ number: "" }],
         age: 0,
-        dob: new Date()
+        dob: new Date(),
       };
     },
   });
 
-  const { register, control, handleSubmit, formState } = form;
+  const { register, control, handleSubmit, formState, watch } = form;
   const { errors } = formState;
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
@@ -51,11 +52,21 @@ const YoutubeFrom = () => {
   const onSubmit = (data: FromValues) => {
     console.log("From Submitted", data);
   };
+
+  // const watchUsername = watch();
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
   renderCount++;
 
   return (
     <div>
       <h1> React Hook From {renderCount / 2} </h1>
+      {/* <h1> Watched value : {watchUsername} </h1> */}
+
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div>
           <label htmlFor="username"> Username </label>
@@ -119,7 +130,7 @@ const YoutubeFrom = () => {
           <input type="text" id="twitter" {...register("social.twitter")} />
         </div>
         <div>
-          <label htmlFor="facbook"> Twitter </label>
+          <label htmlFor="facbook"> Facebook </label>
           <input type="text" id="facbook" {...register("social.facbook")} />
         </div>
         <div>
@@ -173,7 +184,6 @@ const YoutubeFrom = () => {
           />
           <p className="error"> {errors.age?.message}</p>
         </div>
-
 
         <div>
           <label htmlFor="dob"> Date of birth </label>
