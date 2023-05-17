@@ -43,7 +43,15 @@ const YoutubeFrom = () => {
     },
   });
 
-  const { register, control, handleSubmit, formState, watch, getValues } = form;
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    watch,
+    getValues,
+    setValue,
+  } = form;
   const { errors } = formState;
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
@@ -59,17 +67,20 @@ const YoutubeFrom = () => {
   //   });
   //   return () => subscription.unsubscribe();
   // }, [watch]);
-  
-  
-  const handleGetValues = () =>{
-    console.log("Get Values" , getValues());
-    
-  }
-  
-  
+
+  const handleGetValues = () => {
+    console.log("Get Values", getValues());
+  };
+
+  const handleSetValues = () => {
+    setValue("username", "",{
+      shouldValidate:true,
+      shouldDirty:true,
+      shouldTouch:true
+    });
+  };
+
   renderCount++;
-
-
 
   return (
     <div>
@@ -212,8 +223,15 @@ const YoutubeFrom = () => {
 
         <button> Submit </button>
 
+        <button type="button" onClick={handleGetValues}>
+          {" "}
+          Get Values{" "}
+        </button>
 
-        <button type="button" onClick={handleGetValues}> Get Values </button>
+        <button type="button" onClick={handleSetValues}>
+          {" "}
+          Set Value{" "}
+        </button>
       </form>
 
       <DevTool control={control} />
