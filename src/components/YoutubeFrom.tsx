@@ -52,7 +52,11 @@ const YoutubeFrom = () => {
     getValues,
     setValue,
   } = form;
-  const { errors } = formState;
+  const { errors, touchedFields, dirtyFields } = formState;
+  
+  console.log(touchedFields, dirtyFields);
+  
+  
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
     control,
