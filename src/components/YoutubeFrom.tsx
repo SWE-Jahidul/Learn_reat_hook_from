@@ -15,6 +15,8 @@ type FromValues = {
   phNumbers: {
     number: string;
   }[];
+  age: number;
+  dob: Date;
 };
 
 const YoutubeFrom = () => {
@@ -34,6 +36,8 @@ const YoutubeFrom = () => {
         },
         phoneNumbers: ["", ""],
         phNumbers: [{ number: "" }],
+        age: 0,
+        dob: new Date()
       };
     },
   });
@@ -152,6 +156,39 @@ const YoutubeFrom = () => {
           <button type="button" onClick={() => append({ number: "" })}>
             Add Phone Number
           </button>
+        </div>
+
+        <div>
+          <label htmlFor="age"> Age </label>
+          <input
+            type="type"
+            id="age"
+            {...register("age", {
+              valueAsNumber: true,
+              required: {
+                value: true,
+                message: "Age is required",
+              },
+            })}
+          />
+          <p className="error"> {errors.age?.message}</p>
+        </div>
+
+
+        <div>
+          <label htmlFor="dob"> Date of birth </label>
+          <input
+            type="date"
+            id="age"
+            {...register("dob", {
+              valueAsDate: true,
+              required: {
+                value: true,
+                message: "Date of birth is required",
+              },
+            })}
+          />
+          <p className="error"> {errors.dob?.message}</p>
         </div>
 
         <button> Submit </button>
